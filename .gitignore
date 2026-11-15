@@ -1,0 +1,13 @@
+.env
+.env.*
+*.key
+__pycache__/
+.DS_Store
+# üretim çıktıları ve kişisel fotoğraflar depoya girmez
+veri/
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.mp4
+*.mov
