@@ -16,6 +16,12 @@ Sürüm: v1 (2026-11-16). Model adları ve fiyatlar zamanla değişir; dosyalard
 - **Sen üretirsin (API gerekmez):** Yardımcı sana kopyala-yapıştır bir paket verir (model, ayarlar, prompt). Sen higgsfield.ai sitesinde üretir, sonucu sohbete geri yüklersin. ChatGPT, Claude sohbet ve benzerlerinde böyle çalışır.
 - **Yardımcı üretir (Claude Code + Higgsfield API anahtarı):** Yardımcı prompt'u kendisi gönderir, sonucu indirir ve denetler. Her ücretli adımdan önce senden onay ister.
 
+## İndirme ve güncelleme
+- **En kolay:** bu sayfada yeşil **Code** düğmesi → **Download ZIP**. Güncelleme için aynı yerden yeniden indir.
+- **Git biliyorsan:** bir kez `git clone https://github.com/caglarv/higgsfield-uretim.git`, sonra her güncellemede klasörün içinde `git pull`.
+- Yeni sürümden haberdar olmak için sayfanın üstündeki **Watch** düğmesini kullanabilirsin.
+- Bir sorun ya da öneri için **Issues** sekmesinden yaz; depoda değişikliği yalnız sahibi yapar.
+
 ## Kurulum
 
 ### Claude Code
