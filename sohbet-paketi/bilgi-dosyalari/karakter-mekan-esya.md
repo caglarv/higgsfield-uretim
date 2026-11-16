@@ -69,6 +69,8 @@ Kart = aynı kişinin birkaç görünümü, tek geniş görselde (genellikle 16:
 - *Ayrıntı:* animasyonda yüz sade, en yüksek ayrıntı kumaşta; gerçekçide cilt dokusu (gözenek, ince çizgiler) da korunur.
 - *Fon rengi:* kaynaklarda beyaz, açık gri, orta gri ve kırık beyaz hepsi kullanılmış — **DOĞRULANMADI** hangisinin daha iyi olduğu. Varsayılan: düz nötr gri (beyaz, açık tenli yüzde ve beyaz giyside kontur kaybettirebilir; bu da bir çıkarım).
 
+**Kart üretildikten sonra — kimlik bloğunu karta göre güncelle:** model kartta prompt'ta olmayan ayrıntılar ekleyebilir (gerçek denemede, 2026-11-16: kendiliğinden balıkçı yaka kazak, kapüşon, çıtçıtlar, cepler). Kartı satır satır oku, eklenen her görünür ayrıntıyı kimlik bloğuna yaz ve sahnelerde o güncel bloğu harfi harfine kullan; yazılmayan ayrıntı sahnelerde kaybolur ya da değişir. Bu yöntemle aynı sohbette üretilen iki sahnede yüz, bıyık, kıyafet ve eşyalar birebir korundu.
+
 ## 4. Kişi: kıyafet, yaş ve durum değişimi
 
 - **Kıyafet değişimi:** kişiyi yeniden üretmeyin; düzenleme (edit) modeliyle kartı düzenleyin ve referanslara tek görev verin:

@@ -32,6 +32,8 @@ Bu rehber, üretilen bir görsel ya da videonun nasıl denetleneceğini ve sonu�
 - **İsteğe uygunluk:** kadraj sınırı (tam boy istendiyse baş VE ayaklar içeride mi, kenara yapışık mı), kişi sayısı, kıyafet rengi ve parçaları, mekân, günün saati, ışık yönü — prompt'u satır satır görselle eşleyin, çünkü "genel olarak benziyor" hissi tek tek maddeleri gizler.
 - **Kimlik:** yüz referansa benziyor mu; yaş doğru görünüyor mu; gerçek kişi kaynaksa kaynak fotoğrafla yan yana.
 - **İstenmeyen eklemeler:** dövme, takı, gözlük, yazı, logo, filigran, giysideki küçük yazılar, fazladan kişi, yansımadaki insan şekli.
+- **Hikâyeyi taşıyan küçük nesneyi kırpıp büyüt:** sahnenin anlamı küçük bir nesnedeyse (ağdaki balık, eldeki eşya, fincan) ona ayrıca bak ve "fiziksel olarak doğru mu" diye sor: gerçekten tutuluyor / takılı / ağırlığı var mı, yoksa önünde havada mı duruyor. Gerçek denemede (2026-11-16) genel bakışta "sorun yok" denen görselde balık ağa takılı değil ağın önünde asılıydı; kullanıcı fark etti. Düzeltme: yalnız o nesneyi düzenleyen hedefli edit ("Change ONLY the fish… strands cross OVER its body").
+- **Arka planda yazı:** "no text" yazılsa bile tekne, tabela, bayrak, ambalaj gibi arka plan nesnelerinde bulanık harf çıkabilir; kırpıp bak.
 - **Anatomi:** eller ve parmak sayısı, kulaklar, dişler, boyun-omuz bağlantısı, birbirine karışan uzuvlar.
 - **Düşük kalite ("yapay görünüm") işaretleri — büyütünce:**
   - Aşırı keskin, plastik ya da "render" gibi yüzeyler; rötuşlanmış, gözeneksiz cilt.
