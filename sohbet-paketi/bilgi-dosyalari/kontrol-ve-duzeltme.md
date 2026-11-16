@@ -71,7 +71,7 @@ Para harcamadan önce önce metni düzeltin. Not üç parçadan oluşur:
 - **KORUNACAKLAR:** TUTTU listesinin tamamı, tek tek ("aynı kadın, yüz, kıyafet, oda, eşyalar, pencere, ışık").
 
 Görsel düzenlemede kalıp:
-- `Edit this image. Keep everything exactly the same: [list]. Change ONLY: [one change]. Nothing is added, removed or redesigned.`
+- `Edit this image. Keep everything exactly the same: [list]. Change ONLY: [one change]. Nothing else is added, removed or redesigned.`
 
 Bir yardımcı yapay zekâdan prompt düzelttirirken verilecek kalıp:
 - Test edilen prompt'un **tamamı** + ne yanlış gitti + ne isteniyor + "işe yarayanları koru, etkilenen her satırı uyumlu güncelle, tam prompt'u ver, neyi neden değiştirdiğini listele".

@@ -88,6 +88,7 @@ Her bölüm ayrı satır/başlık; İngilizce. Kullanılmayan bölümü sil, bo�
 - **Konuşmanın tonunu replik yanına yaz** (gülerek, fısıldayarak); vurgulu tek kelimeyi büyük harfle yazmak bir yöntemdir (UGC becerisi); etkisi ölçülmedi.
 - **Son replik kesmeden ya da videonun sonundan önce bitsin;** sonda kısa bir sessiz bekleme bırak.
 - **AUDIO:** yalnız sahnedeki sesleri say (ayak sesi, kuş, çaydanlık). Müzik kurguda eklenecekse "no music"; altyazı istenmiyorsa "no subtitles". Neden: model kendiliğinden müzik ve yazı ekleyebilir.
+- **Konuşan kişi videosu:** modelin ürettiği ses kişinin kendi sesi değildir (kullanıcıya baştan söyle); dudak uyumu ve Türkçe telaffuz DOĞRULANMADI — kısa bir taslakla dene. Kişinin gerçek sesi gerekiyorsa sesi ayrı kaydedip kurguda eklemek daha güvenilir.
 - Müzikli işlerde müzik önce gelir, kurgu vuruşlara göre yapılır; müzik prompt'una saniyeli bölüm listesi yazma (bir örnekte istenen sürenin neredeyse iki katı döndü). Dönen sesin süresini ölç.
 
 ## 7. Süreklilik kilitleri, yön ve sayıyla kilitleme

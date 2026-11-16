@@ -5,6 +5,8 @@ Kullanım:
   hf.py yukle  <dosya>                          -> herkese açık URL'yi yazar (dosya dışarı gider)
   hf.py gonder <model-yolu> <govde.json> <cikti-klasoru> [--ad ONEK]   -> ÜCRETLİ
   hf.py devam  <cikti-klasoru> [--ad ONEK]      -> kayıtlı istekten sürdürür (yeni ücret yok)
+  hf.py bagla  <cikti-klasoru> <istek-no> [--ad ONEK] -> panelde görülen istek numarasını kayda yazar,
+                                                   yalnız sorgular ve indirir (ASLA yeniden göndermez)
   hf.py kareler <video.mp4> <klasor>            -> kontrol için kare ızgaraları (ffmpeg gerekir)
 
 Kimlik: --env <dosya> verilirse o dosya; yoksa HF_API_BASE_URL ve HF_CREDENTIALS ortam
@@ -230,8 +232,9 @@ def post_ve_bekle(taban, anahtar, klasor, onek):
                          {"Idempotency-Key": k["idempotency_key"]})
     if durum == AG_HATASI:
         print("BAĞLANTI KOPTU — isteğin sunucuya ulaşıp ulaşmadığı BELLİ DEĞİL.")
-        print(f"Yeni `gonder` YAPMA. Önce paneldeki Requests sayfasına bak; sonra `devam {klasor} --ad {onek}` "
-              "çalıştır (aynı tekrar-gönderim anahtarıyla sürdürür).")
+        print("Yeni `gonder` YAPMA. Önce paneldeki Requests sayfasına bak:")
+        print(f"  - iş orada GÖRÜNÜYORSA: `bagla {klasor} <panel-istek-no> --ad {onek}` (yalnız indirir, yeniden göndermez)")
+        print(f"  - iş orada YOKSA: `devam {klasor} --ad {onek}` (aynı tekrar-gönderim anahtarıyla yeniden dener)")
         return 3
     if durum >= 300 or not isinstance(yanit, dict) or "request_id" not in yanit:
         # Sunucu isteği reddetti: iş başlamadı, kayıt temizlenir ki düzeltilmiş gövdeyle yeniden gönderilebilsin.
@@ -254,6 +257,7 @@ def main():
     g = alt.add_parser("gonder"); g.add_argument("model"); g.add_argument("govde"); g.add_argument("klasor")
     g.add_argument("--ad", default="cikti")
     d = alt.add_parser("devam"); d.add_argument("klasor"); d.add_argument("--ad", default="cikti")
+    b = alt.add_parser("bagla"); b.add_argument("klasor"); b.add_argument("istek"); b.add_argument("--ad", default="cikti")
     k = alt.add_parser("kareler"); k.add_argument("video"); k.add_argument("klasor")
     arg = a.parse_args()
 
@@ -269,6 +273,20 @@ def main():
 
     klasor = pathlib.Path(arg.klasor)
     kayit = klasor / f"{arg.ad}_istek.json"
+    if arg.komut == "bagla":
+        # Bağlantı koptuktan sonra iş panelde görünüyorsa: numarayı kayda yaz, yarım gövdeyi sil,
+        # yalnız sorgula. Böylece `devam` bir daha yeniden gönderemez.
+        klasor.mkdir(parents=True, exist_ok=True)
+        k = json.loads(kayit.read_text()) if kayit.is_file() else {"model": None, "govde": {}}
+        if k.get("request_id") and k["request_id"] != arg.istek:
+            sys.exit(f"DUR: kayıtta başka bir istek numarası var ({k['request_id']}). Yeni --ad kullan.")
+        k["durum"] = "gonderildi"
+        k["request_id"] = arg.istek
+        k["not"] = "numara panelden elle bağlandı"
+        kayit.write_text(json.dumps(k, indent=2, ensure_ascii=False))
+        (klasor / f"{arg.ad}_bekleyen_govde.json").unlink(missing_ok=True)
+        print("istek numarası kayda yazıldı; yalnız sorgulanıyor:", arg.istek)
+        return bekle_indir(taban, anahtar, arg.istek, klasor, arg.ad)
     if not kayit.is_file():
         sys.exit(f"HATA: {kayit} yok; sürdürülecek istek bulunamadı.")
     k = json.loads(kayit.read_text())

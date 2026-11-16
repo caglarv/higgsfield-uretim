@@ -31,7 +31,7 @@ Okuyucu: kullanıcının ne istediğine bakıp model ve ayarı SEN seçersin; ku
 | Not | Üretim için yeterli kredi/abonelik gerekir; ücretsiz planda bazı araçlar kapalı olabilir | API yanıtında ücret alanı yok; gerçek ücret panelin işlem geçmişinde görünür |
 
 - Kredi rakamını dolara, dolar rakamını krediye ÇEVİRME, çünkü iki ayrı hesap ve ayrı fiyat tablosudur; "10 kredi" ile "10 dolar" aynı şey değildir.
-- Web kredi fiyatı bu rehberde YOK; "sitedeki teklifi kontrol et" de. Tek kayıtlı örnek: Ders 2'de Seedance 2.5 · 15 sn · 16:9 · 480p = 38 kredi — o hesabın teklifi, bizimki farklı olabilir.
+- Web kredi fiyatı bu rehberde YOK; "sitedeki teklifi kontrol et" de. Kullanıcı kredinin dolar karşılığını sorarsa: bunu abonelik planı belirler (aylık ödeme ÷ ayda gelen kredi = bir kredinin fiyatı); API dolar fiyatını web işine fiyat diye verme. Tek kayıtlı örnek: Ders 2'de Seedance 2.5 · 15 sn · 16:9 · 480p = 38 kredi — o hesabın teklifi, bizimki farklı olabilir.
 
 ## 3. Hangi iş → hangi model
 
@@ -43,6 +43,7 @@ Okuyucu: kullanıcının ne istediğine bakıp model ve ayarı SEN seçersin; ku
 | Mekân | Seedream 5.0 Pro (mimari, büyük mekân); Soul Cinema (ışık, doku keşfi) | Soul 2; Soul Cinema API'de olabilir (DOĞRULANMADI) |
 | Yazı içeren görsel | GPT 2.5 Sunburst (talimata en sadık, yazı/infografik) | Marketing Studio Image 2.5 Sunburst sürümü (aynı model olduğu DOĞRULANMADI; sürüm seçme alanı API sayfasında yazmıyor); Ideogram 4.0 adayı (yazı gücü DOĞRULANMADI) |
 | Tutarlı karakter | Soul ID → Elements (web özelliği) | Soul 2 + `custom_reference_id` (Soul ID) |
+| Yüz kilidi portresi (kartın ilk adımı) | Hayali kişi: Soul 2.0; fotoğraftan: Seedream 5.0 Pro ile fotoğrafı düz fonlu portreye düzenle | Hayali kişi: Soul 2; fotoğraftan: Marketing Studio Image düzenleme |
 | Basit hareketli video (manzara, hafif hareket) | Seedance 2.5, 480p taslak | Wan 3.0 (`alibaba/wan-3.0/text-to-video`) adayı; Seedance 2.5 480p taslak |
 | Karmaşık hareket / dans / aksiyon | Seedance 2.5 | Seedance 2.5 (`bytedance/seedance-2.5/image-to-video` denendi; `/text-to-video` ve `/reference-to-video` da var); dans için Kling 3.0 Motion Control adayı (aşağıda) |
 | Ürün / kamera kontrollü çekim | Cinema Studio (Ders 3 sinematik reklam örneği) | Kling 4.0 ya da MiniMax H3 adayı; Kling 3.0 (`kling-video/v3.0/...`) |
@@ -83,6 +84,8 @@ Video adayları (Wan / Kling 4.0 / MiniMax H3 / Seedance sıralaması) bağıms�
 **WEB'de (kredi):** görselde ucuz bir modelle tek istekte birkaç seçenek → en uygununu seç → yalnız seçileni düzenleme modeliyle düzelt. Videoda kısa (4–5 sn) ve en düşük çözünürlükte taslak → kullanıcı sonucu getirir, birlikte kontrol → beğenilirse büyük boy ayrı üretim. Maliyeti dolarla SÖYLEME: "sitenin üretmeden önce gösterdiği kredi tutarına bak" de; kredi tutarını bilmiyorsan bilmediğini söyle.
 
 **API'de (dolar) — Görsel:** ucuz modelle 4'lü tek taslak (Soul 2 batch 4 ≈ $0.01) → en uygununu seç → yalnız seçileni düzenle (Marketing Studio: gerçek net $0.13). Neden: tek düzenleme 4'lü taslağın ≈13 katı; yanlış görseli düzenlemek parayı boşa harcar.
+
+**Görselde "büyük boy" nasıl alınır:** aynı prompt'u büyük boyda yeniden üretme — beğenilen seçenek kaybolur, yerine başka bir görsel gelir. İki yol: (1) seçilen görseli düzenleme modeline verip yalnız çözünürlüğü yükselt ("keep the image identical, only increase resolution"); kişi ve ayrıntı yine de biraz değişebilir, sonucu orijinalle karşılaştır. (2) Model aynı tohum (seed) değeriyle yeniden üretmeye izin veriyorsa aynı tohumla büyük boy. Hangisinin daha sadık olduğu ve fiyatı DOĞRULANMADI; ikisi de ayrı ücretli adım, ayrı onay.
 **API'de (dolar) — Video:** kısa (4–5 sn) + düşük çözünürlük taslak (Seedance 480p) → karelerden kontrol (baştan sona sık aralıklı kareler, hareket, istenmeyen kesme) → beğenilirse büyük boy AYRI istek, ayrı ücret ve AYRI onay. Neden: Seedance'te 1080p saniyesi 480p'nin ≈5,5 katı; yanlış yön ucuzken yakalanır.
 - Aynı çıktı için en fazla 2 taslak (2 ücretli istek); çalışan bir taslak yeterli, çünkü "tekrar üret" daha iyisini garanti etmez.
 - Başı temiz sonu bozuk çekim kurguda kesilebilir; yalnız sorunlu planı yeniden üret, çünkü tüm sahneyi yeniden üretmek düzgün kısımları da değiştirebilir.
@@ -120,7 +123,7 @@ DEĞİŞEBİLİR — her işte modelin sayfasından doğrula. "from" = listedeki
 **Video (saniye başı):**
 | Model | Fiyat |
 |---|---|
-| Seedance 2.5 (i2v / t2v) | 480p $0.1177 · 720p $0.2647 · 1080p $0.6518 |
+| Seedance 2.5 (i2v / t2v) | 480p $0.1177 · 720p $0.2647 · 1080p $0.6518 (1080p'nin doğrudan mı yoksa yalnız Finalize Draft ile mi alındığı DOĞRULANMADI; ses açıkken fiyat değişiyor mu bilinmiyor) |
 | Seedance 2.5 Finalize Draft (taslak → 1080p) | $0.6518/sn, ayrı istek |
 | Seedance 2.5 referanslı / edit / extend | $0.1387–$0.7858/sn (model sayfasındaki karşılaştırma tablosu, 2026-11-16) |
 | Kling 2.5 | from $0.032 |
