@@ -17,11 +17,11 @@ Okuyucu: kullanıcının ne istediğine bakıp model ve ayarı SEN seçersin; ku
 ---
 
 ## 1. Önce ortamı belirle
-- **API'siz (web):** sen prompt ve ayar önerisi yazarsın, kullanıcı higgsfield.ai sitesinde kendisi üretir. Yalnız WEB sütunundaki modelleri öner (API'deki bazı adlar sitede farklı ya da yok olabilir).
+- **API'siz (web):** sen prompt ve ayar önerisi yazarsın, kullanıcı higgsfield.ai sitesinde kendisi üretir. Yalnız WEB sütunundaki modelleri öner (API'deki bazı adlar sitede farklı ya da yok olabilir). Model değil de hazır bir ARAÇ (ışık değiştirme, oran değiştirme, storyboard, kısa film stüdyosu, seslendirme) gerekiyorsa `site-ozellikleri.md`. Sitenin 2026-11-16 menüsünde güncel adlar: Seedream 5.5, GPT Image 2.6 Sunburst / Flare, Nano Banana 2.1 / Pro, Soul 2.0, Soul Cinema; aşağıdaki tabloda eski sürüm adı geçiyorsa sitedekini kullan.
 - **API'li (Claude Code):** sen Higgsfield API'ye gönderirsin. Yalnız API sütunundaki modelleri kullan, çünkü örnek filmlerin ve derslerin kullandığı birçok model API'de YOK (aşağıda).
 - Emin değilsen WEB'i varsay: komut çalıştıramıyorsan ya da API anahtarı yoksa gönderen sen olamazsın; olmayan bir aracı varmış gibi "ben göndereyim" deme. Yanlış listeden model önermek işi baştan bozar.
 
-**API'de OLMAYAN (yalnız web) modeller:** Seedream 5.0 Pro, Nano Banana (2 / Pro), GPT Image 2, Topaz (video büyütme), Soul Cast — API fiyat listesinde ve explore aramasında yok (2026-11-16). Web özelliklerinin (tek fotoğraf canlandırma, Soul ID → Elements, kayıtlı öğeler) API'de çalıştığını varsayma, çünkü API sayfalarında görülmedi.
+**API'de OLMAYAN (yalnız web) modeller:** Seedream (5.5; eski adı 5.0 Pro), Nano Banana (2 / Pro), GPT Image 2, Topaz (video büyütme), Soul Cast — API fiyat listesinde ve explore aramasında yok (2026-11-16). Web özelliklerinin (tek fotoğraf canlandırma, Soul ID → Elements, kayıtlı öğeler) API'de çalıştığını varsayma, çünkü API sayfalarında görülmedi.
 
 ## 2. İki para sistemi — birbirine çevrilmez
 | | Web (higgsfield.ai) | API (open.higgsfield.ai) |
@@ -38,12 +38,12 @@ Okuyucu: kullanıcının ne istediğine bakıp model ve ayarı SEN seçersin; ku
 | İş | WEB'de (kredi) | API'de (dolar) |
 |---|---|---|
 | Hayali kişi / konsept görseli | Soul 2.0 (oyuncu seçimi, yüz çeşitliliği); film havası için Soul Cinema | Soul 2 (`higgsfield-ai/soul/v2/standard`), ucuz 4'lü taslak |
-| Gerçek kişinin fotoğrafından görsel | Seedream 5.0 Pro (kişiyi koruyarak kıyafet/fon değiştirir); Nano Banana Pro alternatif | Soul ID'li Soul 2 (kişi başı bir kerelik eğitim) ya da fotoğrafı `image_urls` ile Marketing Studio Image'a vererek düzenleme |
-| Hedefli düzenleme ("her şeyi koru, yalnız ___") | Seedream 5.0 Pro (asıl gücü bu) | Marketing Studio Image (`marketing-studio/image`) — denendi, çalıştı; alternatif Grok Imagine 2.0 (`xai/grok-imagine-image-2.0`) |
-| Mekân | Seedream 5.0 Pro (mimari, büyük mekân); Soul Cinema (ışık, doku keşfi) | Soul 2; Soul Cinema API'de olabilir (DOĞRULANMADI) |
-| Yazı içeren görsel | GPT 2.5 Sunburst (talimata en sadık, yazı/infografik) | Marketing Studio Image 2.5 Sunburst sürümü (aynı model olduğu DOĞRULANMADI; sürüm seçme alanı API sayfasında yazmıyor); Ideogram 4.0 adayı (yazı gücü DOĞRULANMADI) |
+| Gerçek kişinin fotoğrafından görsel | Seedream (5.5; eski adı 5.0 Pro) (kişiyi koruyarak kıyafet/fon değiştirir); Nano Banana Pro alternatif | Soul ID'li Soul 2 (kişi başı bir kerelik eğitim) ya da fotoğrafı `image_urls` ile Marketing Studio Image'a vererek düzenleme |
+| Hedefli düzenleme ("her şeyi koru, yalnız ___") | Seedream (5.5; eski adı 5.0 Pro) (asıl gücü bu) | Marketing Studio Image (`marketing-studio/image`) — denendi, çalıştı; alternatif Grok Imagine 2.0 (`xai/grok-imagine-image-2.0`) |
+| Mekân | Seedream (5.5; eski adı 5.0 Pro) (mimari, büyük mekân); Soul Cinema (ışık, doku keşfi) | Soul 2; Soul Cinema API'de olabilir (DOĞRULANMADI) |
+| Yazı içeren görsel | GPT Image 2.6 Sunburst (eski 2.5) (talimata en sadık, yazı/infografik) | Marketing Studio Image Sunburst (`marketing-studio/image/sunburst`; web'deki GPT Image 2.6 Sunburst ile aynı model olduğu DOĞRULANMADI); Ideogram 4.0 adayı (yazı gücü DOĞRULANMADI) |
 | Tutarlı karakter | Soul ID → Elements (web özelliği) | Soul 2 + `custom_reference_id` (Soul ID) |
-| Yüz kilidi portresi (kartın ilk adımı) | Hayali kişi: Soul 2.0; fotoğraftan: Seedream 5.0 Pro ile fotoğrafı düz fonlu portreye düzenle | Hayali kişi: Soul 2; fotoğraftan: Marketing Studio Image düzenleme |
+| Yüz kilidi portresi (kartın ilk adımı) | Hayali kişi: Soul 2.0; fotoğraftan: Seedream (5.5; eski adı 5.0 Pro) ile fotoğrafı düz fonlu portreye düzenle | Hayali kişi: Soul 2; fotoğraftan: Marketing Studio Image düzenleme |
 | Basit hareketli video (manzara, hafif hareket) | Seedance 2.5, 480p taslak | Wan 3.0 i2v 480p ($0.0375/sn) · Kling 3.0 std · Seedance 2.5 480p taslak |
 | Karmaşık hareket / dans / aksiyon | Seedance 2.5 | Seedance 2.5 i2v (denendi) · Kling 3.0 i2v · Kling 4.0; hareketin şekli kesin olacaksa Kling 3.0 Motion Control (referans videodan) |
 | Yönü / son pozu kesin olan hareket (döner, oturur, bakar) | Bitiş karesi destekleyen araç | Bitiş karesi: Seedance 2.5/2.0 i2v, Kling 3.0 i2v (`last_image_url`), Kling O3/Omni first-last-frame, Wan 3.0, Kling 4.0 · hareket kopyalama: Kling 3.0 Motion Control |
@@ -57,8 +57,8 @@ API'de tek modele atlama: işe uyan 2–3 adayı `api-modeller.md`'den bul, fiya
 ### WEB (kredi)
 - **Soul 2.0** — oyuncu seçimi portreleri, yüzlerde çeşitlilik. / Dikkat: kesin yerleşim ve yazı için ilk tercih değil (kaynakta yalnız portre gücü yazıyor).
 - **Soul Cinema** — fotoğraf gibi ışık, doğal cilt/kumaş, film havası; mekân ve görsel yön keşfi. / Dikkat: kesin kompozisyonu yorumlar (birkaç deneme gerekir), küçük nesneler bozulabilir, gecede gölge ayrıntısı kaybolur; metinle yerel düzenleme YAPMAZ.
-- **Seedream 5.0 Pro** — düzenleme (kişi, eşya, kıyafet, fon) ve cilt/kumaş dokusunu koruma; büyük mekân, mimari, renk; karakter kartı. / Dikkat: çok yoğun tarif "fazla kusursuz CGI" görünümü verir; tekrarlanan nesneler aynı şekil/aralıkta çıkar.
-- **GPT 2.5 Sunburst** — talimata en sadık; yazı, infografik, storyboard, kesin yerleşim. / Dikkat: mekân aşırı keskin/ayrıntılı olabilir; yazıyı harf harf kontrol et.
+- **Seedream (5.5; eski adı 5.0 Pro)** — düzenleme (kişi, eşya, kıyafet, fon) ve cilt/kumaş dokusunu koruma; büyük mekân, mimari, renk; karakter kartı. / Dikkat: çok yoğun tarif "fazla kusursuz CGI" görünümü verir; tekrarlanan nesneler aynı şekil/aralıkta çıkar.
+- **GPT Image 2.6 Sunburst (eski 2.5)** — talimata en sadık; yazı, infografik, storyboard, kesin yerleşim. / Dikkat: mekân aşırı keskin/ayrıntılı olabilir; yazıyı harf harf kontrol et.
 - **Nano Banana Pro** — genel amaçlı, talimata sadık. / Dikkat: bitiş yapay görünebilir, yüzler idealize ve birbirine benzer.
 - **Nano Banana 2.1** — temiz, cilalı 3B karakter görünümü; askılı tulum gibi kıyafet ayrıntısına sadık. / Dikkat (tek deneme, 2026-11-16): abartılı karakter özelliklerini "ortalama" bir yüze yumuşattı — sırık beden, uzun sivri burun, huysuz ifade, şapkanın uzun arka siperi kayboldu; portreyi üç çeyrek yerine tam önden çizdi. Bu modelde abartıyı sayıyla ve sert yaz (bkz. karakter-mekan-esya.md, "Abartı").
 - **ChatGPT Görseller (GPT görsel üretimi)** — Higgsfield dışı; ChatGPT aboneliğinden düşer. / Aynı kart prompt'unda (2026-11-16) abartılı özellikleri ve küçük ayrıntıları en sadık uygulayan bu oldu; ama kendiliğinden ayrıntı ekler (kazak, kapüşon) — kartı okuyup tarife geri yaz.
@@ -162,7 +162,7 @@ Eşzamanlılık: yeni hesapta 2 eşzamanlı üretim; son 28 günde ≥ $25 yükl
 ## 9. Açık / doğrulanmamış konular
 - **Soul ID fotoğraf sayısı:** API kâğıdı 1–100 fotoğraf kabul ediyor (`input_images`). Başka bir kaynağın "en az 20" demesi kalite önerisi olabilir; kaç fotoğrafın iyi sonuç verdiği DOĞRULANMADI.
 - **Marketing Studio `quality`:** low/medium/high, varsayılan high (kâğıttan). Sürümler ayrı yollar: `marketing-studio/image/flare`, `/sunburst`. Ücretin ne kadar düştüğü denenmedi.
-- **Marketing Studio 2.5 Sunburst = web'deki GPT 2.5 Sunburst mü?** Aynı ad; aynı model olduğu DOĞRULANMADI.
+- **Marketing Studio 2.5 Sunburst = web'deki GPT Image 2.6 Sunburst (eski 2.5) mü?** Aynı ad; aynı model olduğu DOĞRULANMADI.
 - **Soul Cinema API'de var mı?** Fiyat listesinde yok; Studio kataloğu `higgsfield-ai/soul/cinema` yolunu kullanıyor. DOĞRULANMADI.
 - **Seedance 2.5 ses:** `generate_audio` varsayılan AÇIK; fiyatı etkiliyor mu kâğıtta yazmıyor. Sessiz istiyorsan `false` ver.
 - **Soul 2 Image to Image** (alanları `api-modeller.md`'de), **Grok Imagine 2.0** ve **Genjutsu** düzenleme gücü denenmedi.

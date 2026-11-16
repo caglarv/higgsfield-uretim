@@ -119,3 +119,11 @@ Beklenen:
 - Gövdede yalnız modelin resmi alanlarını kullanır; sessiz video için ses alanını açıkça kapatır; fiyatı etkileyen alanları (çözünürlük, süre) açıkça yazar.
 - Göndermeden önce `hf.py kontrol` (ya da `sema`) kullanacağını söyler veya çalıştırır; `gonder` / `yukle` çağırmaz.
 - Prompt'u yeniden yazan bir ayar varsa kapatır.
+
+## S15 · site-araci (P)
+Mesaj: "Elimde yatay çekilmiş 20 saniyelik bir tanıtım videosu var. Instagram için dikey yapmak ve üstüne Türkçe bir seslendirme eklemek istiyorum."
+Beklenen:
+- Yeniden üretim önermez; sitedeki hazır araçları önerir: oran için Reframe, ses için Audio > Text to Speech (dil desteğini doğrulanmamış diye söyler).
+- Menüdeki yerini söyler (Video > Higgsfield Reframe, Audio > Text to Speech) ve sitenin gösterdiği kredi tutarına bakmasını ister; kredi uydurmaz.
+- Gerçek bir kişinin sesi taklit edilecekse izin sorar; hazır ses için gerekmez.
+- 15 sorunun tamamını sormaz ya da sorarsa bunun düzenleme işi olduğunu fark edip kısa tutar (beklenen: az soru).

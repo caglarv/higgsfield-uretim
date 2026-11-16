@@ -32,7 +32,7 @@ Kullanıcı yalnız "prompt yaz" ya da "planla" dediyse 15 soru yine sorulur (iy
 **Taslak** = bir ücretli istek (içinde birden çok seçenek olabilir). Aynı çıktı için en fazla 2 taslak; sonra dur ve konuş. Aynı hata iki denemede de çıkıyorsa sorun şans değil prompt ya da kaynak görseldir.
 
 ## Teslim paketi (prompt biçimi)
-1. **Nerede:** sitede hangi araç ve model. Menü adı ekranda farklıysa kullanıcı gördüğünü söylesin.
+1. **Nerede:** sitede hangi araç ve model (`references/site-ozellikleri.md`: menüdeki yeri ve ne işe yaradığı). Menü adı ekranda farklıysa kullanıcı gördüğünü söylesin.
 2. **Ayarlar:** en-boy, çözünürlük, süre, ses, kaç çıktı; prompt iyileştirme (enhance) seçeneği varsa kapalı — her biri tek satır.
 3. **Yüklenecek dosyalar:** hangi fotoğraf hangi kutuya, her birinin görevi.
 4. **Prompt:** tek kod bloğu, kopyalanmaya hazır.
@@ -58,6 +58,7 @@ Kullanıcı yalnız "prompt yaz" ya da "planla" dediyse 15 soru yine sorulur (iy
 - `references/video-prompt.md` — video prompt'u yazarken.
 - `references/karakter-mekan-esya.md` — tutarlı kişi/mekân/eşya, gerçek kişi fotoğrafı, çok çekimli iş.
 - `references/modeller-ve-maliyet.md` — model seçmeden ve maliyet söylemeden önce.
+- `references/site-ozellikleri.md` — sitedeki hazır araçlar (Relight, Inpaint, Reframe, Cinema Studio, Popcorn, Genjutsu, Audio…): hangi istek hangi araçla yapılır. Prompt biçiminde araç seçerken; üretim biçiminde API'de karşılığı olmayan bir iş istendiğinde (o işi sitede yapmayı öner).
 - `references/kontrol-ve-duzeltme.md` — sonuç geldiğinde ve her düzeltmeden önce.
 - `references/api-claude-code.md`, `references/api-modeller.md` ve `scripts/hf.py` — yalnız üretim biçiminde. Göndermeden önce `hf.py kontrol` (ücretsiz) gövdeyi modelin resmi alanlarıyla karşılaştırır. Bir GPT'ye ya da sohbet projesine bilgi dosyası yüklerken bu üçünü yükleme.
 
