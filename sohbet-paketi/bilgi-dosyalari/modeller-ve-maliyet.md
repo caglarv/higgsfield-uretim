@@ -59,6 +59,8 @@ Video adayları (Wan / Kling 4.0 / MiniMax H3 / Seedance sıralaması) bağıms�
 - **Seedream 5.0 Pro** — düzenleme (kişi, eşya, kıyafet, fon) ve cilt/kumaş dokusunu koruma; büyük mekân, mimari, renk; karakter kartı. / Dikkat: çok yoğun tarif "fazla kusursuz CGI" görünümü verir; tekrarlanan nesneler aynı şekil/aralıkta çıkar.
 - **GPT 2.5 Sunburst** — talimata en sadık; yazı, infografik, storyboard, kesin yerleşim. / Dikkat: mekân aşırı keskin/ayrıntılı olabilir; yazıyı harf harf kontrol et.
 - **Nano Banana Pro** — genel amaçlı, talimata sadık. / Dikkat: bitiş yapay görünebilir, yüzler idealize ve birbirine benzer.
+- **Nano Banana 2.1** — temiz, cilalı 3B karakter görünümü; askılı tulum gibi kıyafet ayrıntısına sadık. / Dikkat (tek deneme, 2026-11-16): abartılı karakter özelliklerini "ortalama" bir yüze yumuşattı — sırık beden, uzun sivri burun, huysuz ifade, şapkanın uzun arka siperi kayboldu; portreyi üç çeyrek yerine tam önden çizdi. Bu modelde abartıyı sayıyla ve sert yaz (bkz. karakter-mekan-esya.md, "Abartı").
+- **ChatGPT Görseller (GPT görsel üretimi)** — Higgsfield dışı; ChatGPT aboneliğinden düşer. / Aynı kart prompt'unda (2026-11-16) abartılı özellikleri ve küçük ayrıntıları en sadık uygulayan bu oldu; ama kendiliğinden ayrıntı ekler (kazak, kapüşon) — kartı okuyup tarife geri yaz.
 - **Seedance 2.5** — animasyon ve video; 480p taslak → beğenilirse büyük boy. / Dikkat: büyük boy ayrı ücret.
 - **Cinema Studio** — sinematik reklam (Ders 3: 12 sn, 9:16 örnek). / Dikkat: kısa istekte süre belirtilmemişti, süre ayarını kontrol et.
 - **Topaz** — video büyütme (THREAD filmi: 720p üret + Topaz büyüt). / Dikkat: yalnız web.
