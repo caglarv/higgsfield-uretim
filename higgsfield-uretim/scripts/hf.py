@@ -8,6 +8,9 @@ Kullanım:
   hf.py bagla  <cikti-klasoru> <istek-no> [--ad ONEK] -> panelde görülen istek numarasını kayda yazar,
                                                    yalnız sorgular ve indirir (ASLA yeniden göndermez)
   hf.py kareler <video.mp4> <klasor>            -> kontrol için kare ızgaraları (ffmpeg gerekir)
+  hf.py sema    <model-yolu>                    -> modelin resmi alanları, seçenekleri, fiyatı (ücretsiz)
+  hf.py kontrol <model-yolu> <govde.json>       -> gövdeyi resmi şemayla denetler (ücretsiz)
+                                                   `gonder` bu kontrolü kendiliğinden yapar; hata varsa göndermez.
 
 Kimlik: --env <dosya> verilirse o dosya; yoksa HF_API_BASE_URL ve HF_CREDENTIALS ortam
 değişkenleri; o da yoksa çalışma klasöründen yukarı doğru studio/.env.local ya da .env.local.
@@ -114,6 +117,110 @@ def indir(url, hedef):
     print("indirildi", hedef.name, hedef.stat().st_size, "bayt")
 
 
+SEMA_ADRES = "https://dash.higgsfield.ai/models/{}/llms.txt"
+# Varsayılanı açıkken modelin prompt'umuzu kendi kafasına göre yeniden yazdığı ayarlar.
+YENIDEN_YAZAN = ("enhance_prompt", "prompt_optimizer", "prompt_extend", "enable_thinking")
+
+
+def sema_metni(model, dosya=None):
+    """Modelin resmi kullanım kâğıdını (Copy agent prompt metni) döner; ücretsiz, anahtarsız."""
+    if dosya:
+        return pathlib.Path(dosya).read_text(encoding="utf-8")
+    istek = urllib.request.Request(SEMA_ADRES.format(model.strip("/")),
+                                   headers={"User-Agent": "Mozilla/5.0"})
+    with urllib.request.urlopen(istek, timeout=30) as r:
+        return r.read().decode("utf-8", "replace")
+
+
+def sema_coz(metin):
+    m = re.search(r"### Input JSON Schema\s*```json\s*(\{.*?\})\s*```", metin, re.S)
+    if not m:
+        raise ValueError("kâğıtta 'Input JSON Schema' bulunamadı")
+    s = json.loads(m.group(1))
+    fiyat = re.search(r"## Pricing\s*\n+(.*?)\n\n", metin, re.S)
+    return s, (fiyat.group(1).replace("\n", " ") if fiyat else "")
+
+
+TURLER = {"string": str, "boolean": bool, "integer": int, "number": (int, float),
+          "array": list, "object": dict}
+
+
+def denetle(model, govde, sema):
+    """(hatalar, uyarılar) döner. Hata = sunucu reddeder ya da yanlış iş olur; gönderme."""
+    hatalar, uyarilar = [], []
+    alanlar = sema.get("properties", {})
+    for z in sema.get("required", []):
+        if z not in govde:
+            hatalar.append(f"zorunlu alan eksik: {z}")
+    for k, v in govde.items():
+        t = alanlar.get(k)
+        if t is None:
+            if sema.get("additionalProperties") is False:
+                hatalar.append(f"modelde böyle bir alan yok: {k} (geçerliler: {', '.join(alanlar)})")
+            continue
+        beklenen = TURLER.get(t.get("type"))
+        if beklenen and (not isinstance(v, beklenen) or (t.get("type") in ("integer", "number") and isinstance(v, bool))):
+            hatalar.append(f"{k}: tür {t.get('type')} olmalı, gelen {type(v).__name__}")
+            continue
+        if "enum" in t and v not in t["enum"]:
+            hatalar.append(f"{k}: '{v}' geçersiz; seçenekler {t['enum']}")
+        if isinstance(v, (int, float)) and not isinstance(v, bool):
+            if "minimum" in t and v < t["minimum"]:
+                hatalar.append(f"{k}: {v} < en az {t['minimum']}")
+            if "maximum" in t and v > t["maximum"]:
+                hatalar.append(f"{k}: {v} > en çok {t['maximum']}")
+        if isinstance(v, str) and t.get("minLength") and len(v) < t["minLength"]:
+            hatalar.append(f"{k}: boş olamaz")
+        if isinstance(v, list) and t.get("maxItems") and len(v) > t["maxItems"]:
+            hatalar.append(f"{k}: en çok {t['maxItems']} öğe")
+    for k in YENIDEN_YAZAN:
+        if k in alanlar:
+            acik = govde.get(k, alanlar[k].get("default"))
+            if acik is True:
+                uyarilar.append(f"{k} AÇIK: model prompt'u kendi kafasına göre yeniden yazar; "
+                                f"kendi prompt'unu koruyacaksan {k}: false ver")
+    if "quality" in alanlar and "quality" not in govde:
+        uyarilar.append(f"quality verilmedi; varsayılan '{alanlar['quality'].get('default')}' kullanılır "
+                        "(fiyatı etkiler — açıkça yaz)")
+    for k, t in alanlar.items():
+        if k not in govde and "default" in t and k in ("resolution", "duration", "generate_audio", "sound"):
+            uyarilar.append(f"{k} verilmedi; varsayılan {t['default']!r} kullanılır (fiyatı etkileyebilir)")
+    return hatalar, uyarilar
+
+
+def kontrol_et(model, govde, sema_dosya=None, sessiz=False):
+    """Şemayı indirip gövdeyi denetler. Hata varsa False döner."""
+    try:
+        sema, fiyat = sema_coz(sema_metni(model, sema_dosya))
+    except Exception as e:
+        print(f"ŞEMA OKUNAMADI ({type(e).__name__}: {e}). Gövde doğrulanamadı.")
+        return None
+    hatalar, uyarilar = denetle(model, govde, sema)
+    if not sessiz and fiyat:
+        print("fiyat (kâğıttan):", fiyat[:300])
+    for u in uyarilar:
+        print("UYARI:", u)
+    for h in hatalar:
+        print("HATA:", h)
+    print("kontrol:", "GEÇTİ" if not hatalar else f"{len(hatalar)} HATA — gönderilmez")
+    return not hatalar
+
+
+def sema_goster(model, sema_dosya=None):
+    sema, fiyat = sema_coz(sema_metni(model, sema_dosya))
+    zorunlu = set(sema.get("required", []))
+    print(f"model: {model}")
+    print("fiyat:", fiyat or "kâğıtta yok — fiyat sayfasından oku")
+    for k, t in sema.get("properties", {}).items():
+        ek = []
+        if "enum" in t: ek.append("seçenek " + "/".join(map(str, t["enum"])))
+        if "default" in t: ek.append(f"varsayılan {t['default']!r}")
+        if "minimum" in t or "maximum" in t: ek.append(f"aralık {t.get('minimum', '')}–{t.get('maximum', '')}")
+        print(f"  {'*' if k in zorunlu else ' '} {k} ({t.get('type', '?')}) {'; '.join(ek)}")
+    print("(* = zorunlu; listede olmayan alan gönderilirse sunucu reddeder)"
+          if sema.get("additionalProperties") is False else "(* = zorunlu)")
+
+
 def uzanti(url, varsayilan):
     u = pathlib.PurePosixPath(url.split("?", 1)[0]).suffix.lower()
     return u if u in (".png", ".jpg", ".jpeg", ".webp", ".gif", ".mp4", ".mov", ".webm") else varsayilan
@@ -211,6 +318,12 @@ def gonder(taban, anahtar, arg):
         sys.exit(f"DUR: {kayit.name} zaten var. Aynı işi ikinci kez ücretlendirmemek için "
                  f"`devam` kullan; gerçekten YENİ bir üretimse yeni bir --ad ver (v2 gibi).")
     govde = json.loads(pathlib.Path(arg.govde).read_text())
+    sonuc = kontrol_et(arg.model, govde, sessiz=True)
+    if sonuc is False:
+        sys.exit("DUR: gövde resmi şemaya uymuyor; hiçbir şey gönderilmedi, ücret yok.")
+    if sonuc is None and not arg.semasiz:
+        sys.exit("DUR: şema okunamadı. Ağ sorunu olabilir; tekrar dene. "
+                 "Gövdeden eminsen bilerek geçmek için --semasiz ekle.")
     # Medya adresleri kalıcı kayda yazılmaz (kişisel fotoğraf adresi sızmasın);
     # tam gövde yalnız yarım kalan gönderimi sürdürmek için ayrı dosyada tutulur ve iş alınınca silinir.
     temiz = {k: v for k, v in govde.items() if not k.endswith(("_url", "_urls"))}
@@ -256,6 +369,9 @@ def main():
     y = alt.add_parser("yukle"); y.add_argument("dosya")
     g = alt.add_parser("gonder"); g.add_argument("model"); g.add_argument("govde"); g.add_argument("klasor")
     g.add_argument("--ad", default="cikti")
+    g.add_argument("--semasiz", action="store_true", help="şema okunamazsa bile gönder (önerilmez)")
+    s = alt.add_parser("sema"); s.add_argument("model"); s.add_argument("--dosya")
+    kt = alt.add_parser("kontrol"); kt.add_argument("model"); kt.add_argument("govde"); kt.add_argument("--dosya")
     d = alt.add_parser("devam"); d.add_argument("klasor"); d.add_argument("--ad", default="cikti")
     b = alt.add_parser("bagla"); b.add_argument("klasor"); b.add_argument("istek"); b.add_argument("--ad", default="cikti")
     k = alt.add_parser("kareler"); k.add_argument("video"); k.add_argument("klasor")
@@ -263,6 +379,11 @@ def main():
 
     if arg.komut == "kareler":
         return kareler(arg.video, arg.klasor)
+    if arg.komut == "sema":
+        return sema_goster(arg.model, arg.dosya)
+    if arg.komut == "kontrol":
+        sonuc = kontrol_et(arg.model, json.loads(pathlib.Path(arg.govde).read_text()), arg.dosya)
+        return 0 if sonuc else 2
 
     taban, anahtar = kimlik(arg.env)
     if arg.komut == "yukle":

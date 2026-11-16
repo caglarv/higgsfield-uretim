@@ -12,11 +12,14 @@ import pathlib, shutil
 k = pathlib.Path("higgsfield-uretim")
 s = (k/"SKILL.md").read_text(encoding="utf-8").split("---", 2)[2].strip() + "\n"
 s = s.replace("`references/", "`")
-s = s.replace("`api-claude-code.md` ve `scripts/hf.py` — yalnız üretim biçiminde. Bir GPT'ye ya da sohbet projesine bilgi dosyası yüklerken bu ikisini yükleme.", "(API dosyaları bu pakete dahil değildir; burada hep prompt biçiminde çalışırsın.)")
+eski = "`api-claude-code.md`, `api-modeller.md` ve `scripts/hf.py` — yalnız üretim biçiminde. Göndermeden önce `hf.py kontrol` (ücretsiz) gövdeyi modelin resmi alanlarıyla karşılaştırır. Bir GPT'ye ya da sohbet projesine bilgi dosyası yüklerken bu üçünü yükleme."
+assert eski in s, "SKILL.md API satırı değişmiş; esitle.sh'yi güncelle"
+s = s.replace(eski, "(API dosyaları bu pakete dahil değildir; burada hep prompt biçiminde çalışırsın.)")
+s = s.replace("; üretim biçiminde ayrıca `api-modeller.md`", "")
 s = s.replace("`api-claude-code.md` dosyasını oku.", "(Bu ortamda geçerli değil.)")
 pathlib.Path("sohbet-paketi/talimat.txt").write_text(s, encoding="utf-8")
 for f in (k/"references").glob("*.md"):
-    if f.name != "api-claude-code.md":
+    if f.name not in ("api-claude-code.md", "api-modeller.md"):
         shutil.copy(f, "sohbet-paketi/bilgi-dosyalari/")
 print("sohbet paketi eşitlendi:", len(s), "karakter")
 PY

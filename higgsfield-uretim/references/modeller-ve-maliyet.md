@@ -44,12 +44,13 @@ Okuyucu: kullanıcının ne istediğine bakıp model ve ayarı SEN seçersin; ku
 | Yazı içeren görsel | GPT 2.5 Sunburst (talimata en sadık, yazı/infografik) | Marketing Studio Image 2.5 Sunburst sürümü (aynı model olduğu DOĞRULANMADI; sürüm seçme alanı API sayfasında yazmıyor); Ideogram 4.0 adayı (yazı gücü DOĞRULANMADI) |
 | Tutarlı karakter | Soul ID → Elements (web özelliği) | Soul 2 + `custom_reference_id` (Soul ID) |
 | Yüz kilidi portresi (kartın ilk adımı) | Hayali kişi: Soul 2.0; fotoğraftan: Seedream 5.0 Pro ile fotoğrafı düz fonlu portreye düzenle | Hayali kişi: Soul 2; fotoğraftan: Marketing Studio Image düzenleme |
-| Basit hareketli video (manzara, hafif hareket) | Seedance 2.5, 480p taslak | Wan 3.0 (`alibaba/wan-3.0/text-to-video`) adayı; Seedance 2.5 480p taslak |
-| Karmaşık hareket / dans / aksiyon | Seedance 2.5 | Seedance 2.5 (`bytedance/seedance-2.5/image-to-video` denendi; `/text-to-video` ve `/reference-to-video` da var); dans için Kling 3.0 Motion Control adayı (aşağıda) |
-| Ürün / kamera kontrollü çekim | Cinema Studio (Ders 3 sinematik reklam örneği) | Kling 4.0 ya da MiniMax H3 adayı; Kling 3.0 (`kling-video/v3.0/...`) |
-| Konuşmalı / sesli video | Seedance 2.5 (sesli üretim desteği web'de DOĞRULANMADI) | Seedance 2.5 (`generate_audio` alanı var); Kling 3.0 (`sound` ayarı var) |
+| Basit hareketli video (manzara, hafif hareket) | Seedance 2.5, 480p taslak | Wan 3.0 i2v 480p ($0.0375/sn) · Kling 3.0 std · Seedance 2.5 480p taslak |
+| Karmaşık hareket / dans / aksiyon | Seedance 2.5 | Seedance 2.5 i2v (denendi) · Kling 3.0 i2v · Kling 4.0; hareketin şekli kesin olacaksa Kling 3.0 Motion Control (referans videodan) |
+| Yönü / son pozu kesin olan hareket (döner, oturur, bakar) | Bitiş karesi destekleyen araç | Bitiş karesi: Seedance 2.5/2.0 i2v, Kling 3.0 i2v (`last_image_url`), Kling O3/Omni first-last-frame, Wan 3.0, Kling 4.0 · hareket kopyalama: Kling 3.0 Motion Control |
+| Ürün / kamera kontrollü çekim | Cinema Studio (Ders 3 sinematik reklam örneği) | Kling 4.0 ya da MiniMax H3; LTX 2.5 (`camera_movement` seçimi); Cinema Studio 4.0 |
+| Konuşmalı / sesli video | Seedance 2.5 (sesli üretim desteği web'de DOĞRULANMADI) | Seedance 2.5 (`generate_audio`); Kling 3.0 / 2.6 (`sound`); Wan 3.0 (`generate_audio`) |
 
-Video adayları (Wan / Kling 4.0 / MiniMax H3 / Seedance sıralaması) bağımsız sıralamalardan gelen bir öneridir, kendi denememiz yok — ilk işte küçük test yap, çünkü kalite karşılaştırması ancak gerçek çıktıyla yapılabilir.
+API'de tek modele atlama: işe uyan 2–3 adayı `api-modeller.md`'den bul, fiyatlarını hesapla, birini gerekçeyle seç. Kalite sıralaması için kendi denememiz yalnız Seedance 2.5; önemli işte iki adayı en ucuz ayarda birer taslakla dene (iki ücret, iki onay).
 
 ## 4. Model kartları — güçlü yanı / dikkat
 
@@ -69,16 +70,16 @@ Video adayları (Wan / Kling 4.0 / MiniMax H3 / Seedance sıralaması) bağıms�
 ### API (dolar)
 - **Soul 2** (`higgsfield-ai/soul/v2/standard`) — en ucuz görsel ($0.0032/adet 720p), 4'lü batch, Soul ID ile kimlik. / Dikkat: `enhance_prompt` API sayfasında varsayılan AÇIK, kendi prompt'unu korumak için kapat; 720p istenip 1696×960 geldi (boyut beklenenden büyük olabilir).
 - **Soul 2 Image to Image** — var, Soul 2 ile aynı fiyat. / Dikkat: uç noktası ve alanları okunmadı.
-- **Marketing Studio Image** (`marketing-studio/image`) — üretir ve DÜZENLER, 4K'ya kadar, 16'ya kadar referans görsel; düzenleme denemesinde kişi/oda korundu. / Dikkat: gerçek ücret liste tahmininin ≈7 katı çıktı (net $0.13); kaliteyi/fiyatı belirleyen alanın adı ve değerleri DOĞRULANMADI — göndermeden önce model sayfasından oku, bilmediğin alanı uydurma; yan etki olarak ışık zayıflayabilir; `enhance_prompt` açılırsa `preset_id` gerekir ve +%10 ücret.
+- **Marketing Studio Image** (`marketing-studio/image`) — üretir ve DÜZENLER, 4K'ya kadar, 16'ya kadar referans görsel; düzenleme denemesinde kişi/oda korundu. / Dikkat: `quality` low/medium/high, **varsayılan high**; ücret token ile hesaplanır (önce tahmini çekim, sonra düzeltme). İlk düzenlemede `quality` gönderilmedi, net $0.13 çekildi (liste tahmininin ≈7 katı) — büyük olasılıkla neden bu, ücret etkisi DOĞRULANMADI. Her gönderimde `quality`yi açıkça yaz; yan etki olarak ışık zayıflayabilir; `enhance_prompt` açılırsa `preset_id` gerekir ve +%10 ücret.
 - **Grok Imagine 2.0** (`xai/grok-imagine-image-2.0`) — kaynak görselleri dönüştürür/iyileştirir (`image_urls`, `quality` low/medium). / Dikkat: düzenleme sadakati denenmedi.
 - **Qwen Image 3** — yalnız metinden görsel. / Dikkat: düzenleme YOK.
 - **Z-Image Turbo, Ideogram 4.0, Recraft 4.1, AI Influencer, Ads Studio, Soul Standard** — fiyat listesinde var. / Dikkat: ne için iyi oldukları okunmadı; seçmeden önce model sayfasına bak.
-- **Seedance 2.5** (`bytedance/seedance-2.5`) — 4–30 sn; başlangıç/bitiş karesi, 30'a kadar referans görsel, video ve ses referansı; ayrıca edit ve extend modları. / Dikkat: gerçek yüzü reddedebilir (§8); ilk denemede yön ve mesafe talimatları tutmadı (kameraya yaklaştı, yanlış yöne döndü).
-- **Wan 3.0 / Wan 3.0 Prime** — ucuz video ($0.038 / $0.051/sn'den). / Dikkat: katalogda yalnız metinden video yolu var; deneme yok.
-- **Kling 3.0** (Turbo / Standard / Pro / 4K) — 3–15 sn, başlangıç+bitiş karesi, `sound`, çoklu çekim seçeneği. / Dikkat: deneme yok.
-- **Kling 3.0 Motion Control** (`kling-video/v3/motion-control/std|pro`) — katalogda bir görsel + bir video alıyor; bir videodaki hareketi görseldeki kişiye aktarma aracı gibi görünüyor (DOĞRULANMADI, yalnız ayarlardan çıkarım). / Dikkat: dans işinde denenmeye değer, önce sayfasını oku.
-- **Kling 2.5 / 2.6 / O1 / O3 / 4.0 / 4.0 Flash, MiniMax Hailuo 2.3 / H3, LTX 2.5 Fast / Pro, PixVerse 6, Grok Video 1.5, Happy Horse, Cinema Studio 4.0** — fiyat listesinde var. / Dikkat: güçlü yanları okunmadı.
-- **Genjutsu Object Swap / Light Object Swap** — videoda nesne değiştirme olabilir (DOĞRULANMADI).
+- **Seedance 2.5** (`bytedance/seedance-2.5`) — 4–30 sn; i2v'de bitiş karesi (`end_image_url`), referans modunda 30'a kadar görsel + video + ses; edit, extend, 480p taslak → 1080p. / Dikkat: gerçek yüzü reddedebilir (§8); iki dans denemesinde konum kilidi tuttu ama dönüş yönü iki kez ters çıktı (yazıyla yön verilmişti).
+- **Wan 3.0 / Wan 3.0 Prime** — en ucuz video (480p $0.0375 / $0.051/sn); t2v, i2v (bitiş karesi), reference. / Dikkat: deneme yok.
+- **Kling 3.0** (Turbo / Standard / Pro / 4K) — 3–15 sn, bitiş karesi (`last_image_url`), `sound`, `multi_prompt` (çekim çekim), `cfg_scale`. / Dikkat: deneme yok.
+- **Kling 3.0 Motion Control** (`kling-video/v3/motion-control/std|pro`) — resmi tanım: bir resmi verilen videodaki hareketle canlandırır; `character_orientation: video` yönü videodan alır. std 720p $0.092/sn (referans video süresi kadar). / Dikkat: bir referans video (kendi çekimin) gerekir; büyük baş dönüşlerinde yüz kayabilir (kaynak: kullanıcı yazıları, denemedik).
+- **Kling O3 / Omni, Kling 4.0 / 4.0 Flash, Kling 2.5 / 2.6, MiniMax H3 / Hailuo 2.3, LTX 2.5, PixVerse 6, Grok Video 1.5, Happy Horse, Cinema Studio 4.0** — modları, alanları ve fiyatları `api-modeller.md`'de. / Dikkat: hiçbiri denenmedi; Hailuo'da `prompt_optimizer` varsayılan açık (prompt'u yeniden yazar).
+- **Genjutsu** (motion-transfer, object-swap, restyle) ve **Genjutsu Light** — videonun hareketini koruyup kişi/nesne/stil değiştirir (resmi tanım). / Dikkat: denenmedi.
 
 ## 5. Ucuzdan pahalıya çalışma sırası
 **Tanım:** "taslak" = bir ücretli istek. Tek istekte birden çok seçenek gelebilir (ör. 4'lü); bu yine tek taslaktır. "En fazla 2 taslak" kuralı istek sayısını sınırlar, seçenek sayısını değil.
@@ -89,12 +90,13 @@ Video adayları (Wan / Kling 4.0 / MiniMax H3 / Seedance sıralaması) bağıms�
 
 **Görselde "büyük boy" nasıl alınır:** aynı prompt'u büyük boyda yeniden üretme — beğenilen seçenek kaybolur, yerine başka bir görsel gelir. İki yol: (1) seçilen görseli düzenleme modeline verip yalnız çözünürlüğü yükselt ("keep the image identical, only increase resolution"); kişi ve ayrıntı yine de biraz değişebilir, sonucu orijinalle karşılaştır. (2) Model aynı tohum (seed) değeriyle yeniden üretmeye izin veriyorsa aynı tohumla büyük boy. Hangisinin daha sadık olduğu ve fiyatı DOĞRULANMADI; ikisi de ayrı ücretli adım, ayrı onay.
 **API'de (dolar) — Video:** kısa (4–5 sn) + düşük çözünürlük taslak (Seedance 480p) → karelerden kontrol (baştan sona sık aralıklı kareler, hareket, istenmeyen kesme) → beğenilirse büyük boy AYRI istek, ayrı ücret ve AYRI onay. Neden: Seedance'te 1080p saniyesi 480p'nin ≈5,5 katı; yanlış yön ucuzken yakalanır.
+- **Taslağı aynen büyüten yol yalnız Seedance 2.5'te var** (`draft` → `finalize-draft`). Wan, Kling ve diğerlerinde "büyük boy" aynı prompt'la YENİ bir üretimdir; hareket ve ayrıntı taslaktan farklı çıkabilir. Bunu onay isterken söyle; taslağın birebir büyümesi önemliyse Seedance 2.5 taslak yolunu seç ya da baştan istenen çözünürlükte üret.
 - Aynı çıktı için en fazla 2 taslak (2 ücretli istek); çalışan bir taslak yeterli, çünkü "tekrar üret" daha iyisini garanti etmez.
 - Başı temiz sonu bozuk çekim kurguda kesilebilir; yalnız sorunlu planı yeniden üret, çünkü tüm sahneyi yeniden üretmek düzgün kısımları da değiştirebilir.
 - Yazı ve logo: üretime yazdırma, sonradan yerleştir — modeller harfi bozar, düzeltmesi ek ücret.
 
 ## 6. Maliyet kuralları
-1. **"from" liste fiyatını başka ayara uygulama.** Neden: liste fiyatı en ucuz modun fiyatı. Vaka (2026-11-16): Marketing Studio düzenlemesine "1k düşük $0.0162" ile ≈$0.02 dendi; gerçek −$0.15 + $0.02 iade = net ≈ $0.13 (≈7 kat). Olası neden: `quality` gönderilmedi, varsayılan yüksek olabilir (DOĞRULANMADI).
+1. **"from" liste fiyatını başka ayara uygulama.** Neden: liste fiyatı en ucuz modun fiyatı. Vaka (2026-11-16): Marketing Studio düzenlemesine "1k düşük $0.0162" ile ≈$0.02 dendi; gerçek −$0.15 + $0.02 iade = net ≈ $0.13 (≈7 kat). Neden büyük olasılıkla: `quality` gönderilmedi ve varsayılanı high (kâğıtta yazıyor); ücret etkisi denenmedi. Varsayılanı fiyatı artıran her alanı (kalite, çözünürlük, süre, ses) açıkça yaz; `hf.py kontrol` verilmeyenleri uyarır.
 2. **Fiyatı seçilen mod + çözünürlük + kalite + süre (+ referans/ses) için modelin kendi sayfasından oku.** Neden: aynı model içinde fiyat 5–50 kat oynuyor (Marketing Studio 1k düşük $0.0162 ↔ 4k yüksek $0.7219).
 3. **Toplamı söyle: taslak + final + düzenleme + büyütme + varyasyon.** Neden: Seedance'te taslağı 1080p'ye çevirmek (Finalize Draft) ayrı istek, ayrı ücret; tek kalem söylemek gerçek maliyeti gizler.
 4. **Beğenilmeyen ama tamamlanan iş de ücretlidir.** Neden: ücret çıktı kalitesine değil üretime göre alınır. Başarısız / NSFW / fikrî hak engeli genelde iade edilir, bazı modellerde istisna var (Ders 1).
@@ -125,26 +127,24 @@ DEĞİŞEBİLİR — her işte modelin sayfasından doğrula. "from" = listedeki
 **Video (saniye başı):**
 | Model | Fiyat |
 |---|---|
-| Seedance 2.5 (i2v / t2v) | 480p $0.1177 · 720p $0.2647 · 1080p $0.6518 (1080p'nin doğrudan mı yoksa yalnız Finalize Draft ile mi alındığı DOĞRULANMADI; ses açıkken fiyat değişiyor mu bilinmiyor) |
+| Seedance 2.5 (i2v / t2v) | 480p $0.1177 · 720p $0.2647 · 1080p $0.6518 (1080p doğrudan seçilebilir; ses açıkken fiyat değişiyor mu kâğıtta yazmıyor) |
 | Seedance 2.5 Finalize Draft (taslak → 1080p) | $0.6518/sn, ayrı istek |
-| Seedance 2.5 referanslı / edit / extend | $0.1387–$0.7858/sn (model sayfasındaki karşılaştırma tablosu, 2026-11-16) |
-| Kling 2.5 | from $0.032 |
-| Wan 3.0 | from $0.038 |
-| MiniMax Hailuo 2.3 | from $0.047 |
-| Wan 3.0 Prime | from $0.051 |
-| Kling 2.6 | from $0.052 |
-| Kling 4.0 Flash | from $0.063 (720p) |
-| Kling O1 / O3 / 3.0 | from $0.063 / $0.068 / $0.071 |
-| Genjutsu Light (Object Swap) | from $0.074 (Object Swap $0.074–0.294, 4 sn) |
-| Wan 2.6 / 2.7 | from $0.075 |
-| Seedance 2.0 · Grok Video 1.5 | from $0.080 |
-| LTX 2.5 Fast / Pro | from $0.090 / $0.120 |
-| PixVerse 6 | from $0.115 |
-| Cinema Studio 4.0 | from $0.123 (720p'ye kadar) |
-| Kling 4.0 | from $0.126 |
-| MiniMax H3 | from $0.130 |
-| Happy Horse | from $0.140 |
-| Genjutsu (Object Swap) | $0.154–0.835 |
+| Seedance 2.5 edit / extend (video girdili) | 480p $0.1387 · 720p $0.3264 · 1080p $0.7858 |
+| Seedance 2.0 | 480p $0.0804 · 720p $0.1735 · 1080p $0.4293 · 4K $0.8907 |
+| Wan 3.0 / Wan 3.0 Prime | 480p $0.0375 / $0.051 · 720p $0.075 / $0.105 · 1080p $0.15 / $0.21 |
+| Wan 2.6 / 2.7 | 720p ≈ $0.075 · 1080p ≈ $0.113 |
+| Kling 2.5 turbo | std 720p $0.0315 · pro 1080p $0.0525 |
+| Kling 2.6 pro | 1080p $0.0666 |
+| Kling 3.0 | std 720p $0.0714 · pro 1080p $0.0962 · 4K $0.3151 · turbo 720p $0.0839 |
+| Kling 3.0 Motion Control | std 720p $0.0920 · pro 1080p $0.1189 (referans video süresi kadar); eski sürüm std $0.0523 |
+| Kling O3 / Omni | 720p $0.0683 / $0.0632 (görsel modları); video modları $0.0945 |
+| Kling 4.0 / 4.0 Flash | 720p $0.1257 · 1080p $0.1879 / Flash reference 720p $0.094 |
+| MiniMax H3 | reference 2K $0.13 (+ 5'ten sonraki her referans görsel $0.08) |
+| Genjutsu / Genjutsu Light | 480p $0.154 / $0.0739 (kaynak video süresi kadar); restyle ≈ $0.318 |
+| Hailuo 2.3, LTX 2.5, PixVerse 6, Happy Horse, Grok Video 1.5 | kâğıtta yok; liste "from": Hailuo $0.047 · LTX $0.090/$0.120 · PixVerse $0.115 · Happy Horse $0.140 · Grok $0.080 |
+| Cinema Studio 4.0 | token ile; liste "from" $0.123 |
+
+Kaynak: modlerin kullanım kâğıtları (2026-11-16); ayrıntı `api-modeller.md`.
 
 Örnek hesap: Seedance 2.5, 480p, 5 sn = 5 × $0.1177 ≈ $0.59 (ilk video denemesi; gerçek ücret DOĞRULANMADI). Aynı 5 sn 1080p'ye çevirmek ≈ +$3.26 daha.
 Eşzamanlılık: yeni hesapta 2 eşzamanlı üretim; son 28 günde ≥ $25 yüklenince 10.
@@ -160,15 +160,14 @@ Eşzamanlılık: yeni hesapta 2 eşzamanlı üretim; son 28 günde ≥ $25 yükl
 - Reddedilirse dürüst seçenekler sun: hayali karakterle üretmek ya da kullanıcının izinli başka bir yol seçmesi.
 
 ## 9. Açık / doğrulanmamış konular
-- **Soul ID en az fotoğraf sayısı:** Soul 2 API notumuz 1–100 diyor; başka bir kaynak en az 20 diyor. ÇELİŞKİ — Soul ID işinden önce resmi sayfadan doğrula.
-- **Marketing Studio `quality` alanı:** değerleri ve varsayılanı bilinmiyor; varsayılan yüksek olabilir (≈7 kat ücretin olası nedeni). Sürüm (2.0 Alpha / 2.5 Flare / 2.5 Sunburst) seçme alanı API sayfasında yazmıyor.
+- **Soul ID fotoğraf sayısı:** API kâğıdı 1–100 fotoğraf kabul ediyor (`input_images`). Başka bir kaynağın "en az 20" demesi kalite önerisi olabilir; kaç fotoğrafın iyi sonuç verdiği DOĞRULANMADI.
+- **Marketing Studio `quality`:** low/medium/high, varsayılan high (kâğıttan). Sürümler ayrı yollar: `marketing-studio/image/flare`, `/sunburst`. Ücretin ne kadar düştüğü denenmedi.
 - **Marketing Studio 2.5 Sunburst = web'deki GPT 2.5 Sunburst mü?** Aynı ad; aynı model olduğu DOĞRULANMADI.
 - **Soul Cinema API'de var mı?** Fiyat listesinde yok; Studio kataloğu `higgsfield-ai/soul/cinema` yolunu kullanıyor. DOĞRULANMADI.
-- **Seedance 2.5 çözünürlükleri:** model sayfası 480p/720p/1080p fiyatı veriyor; Studio kataloğu yalnız 480p/720p seçeneği içeriyor. 1080p'nin doğrudan mı yoksa yalnız Finalize Draft ile mi alındığı DOĞRULANMADI. Ses (`generate_audio`, katalogda varsayılan açık) fiyatı etkiliyor mu, bilinmiyor.
-- **Kling 3.0 Motion Control** hareket aktarımı mı yapıyor — yalnız katalog ayarlarından çıkarım.
-- **Soul 2 Image to Image** alanları, **Grok Imagine 2.0** ve **Genjutsu** düzenleme gücü denenmedi.
+- **Seedance 2.5 ses:** `generate_audio` varsayılan AÇIK; fiyatı etkiliyor mu kâğıtta yazmıyor. Sessiz istiyorsan `false` ver.
+- **Soul 2 Image to Image** (alanları `api-modeller.md`'de), **Grok Imagine 2.0** ve **Genjutsu** düzenleme gücü denenmedi.
 - **Web'de** sesli/konuşmalı videoyu hangi modelin en iyi yaptığı kaynaklarda yok; Soul Cast'in ne yaptığı okunmadı; web kredi fiyatları bilinmiyor.
 - **Kayıtlı öğeler (elements)** API'de var mı: görülmedi; API'de referanslar görsel olarak gönderiliyor.
-- **Video model sıralaması** (Wan / Kling 4.0 / MiniMax H3 / Seedance) bağımsız kaynaklardan; kendi denememiz yalnız Seedance 2.5.
+- **Video model kalitesi:** kendi denememiz yalnız Seedance 2.5; diğer modellerin dans/yön/kimlik başarısı bilinmiyor.
 - **API üretimleri web hesabına (Akademi ödevlerine) sayılıyor mu** bilinmiyor.
 - **Tarih farkı:** ilk Soul 2 ücreti panelde "Nov 15" görünüyor, iş 16 Kasım'da yapıldı (saat dilimi olabilir).

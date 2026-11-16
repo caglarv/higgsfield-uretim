@@ -94,14 +94,18 @@ Her bölüm ayrı satır/başlık; İngilizce. Kullanılmayan bölümü sil, bo�
 ## 7. Süreklilik kilitleri, yön ve sayıyla kilitleme
 **Genel kilitler:** tek kişi / tam N kişi; aynı yüz ve kimlik baştan sona; iki kol, iki bacak, her elde beş parmak; eşya hangi elde; mobilyalar yerinde; yeni kişi, yazı, logo yok. Önce olumlu cümleyle yaz ("the cat stays inside the basket"); hata sürerse adı konmuş açık yasak ekle. Hangisinin daha iyi uygulandığı kaynaklarda çelişkili — DOĞRULANMADI.
 
-**Ders A — yönü odaya göre değil KAMERAYA göre yaz (gerçek deneme, 2026-11-16).**
-- Ne oldu: "half turn toward the window on the left" yazıldı; kadın pencereye değil kameraya SIRTINI döndü, yüzüne ışık hiç düşmedi.
-- Neden: "pencere", "oda", "sol" model için belirsiz; kimin solu, hangi eksen? Model en kolay dönüşü seçti.
-- Çare: her yönü kameraya ve kişinin kendi bedenine göre, görünür sonucuyla yaz:
-  - "she turns 90 degrees to HER RIGHT (camera-left), so her body is in profile to the camera; her face stays visible to the camera the whole time."
-  - Kameraya bakan biri için kişinin sağı = kameranın solu; ikisini birlikte yaz, karışıklık kalmasın.
-  - Dönüşü derece ile ver (45°, 90°), "half turn" gibi belirsiz ifade kullanma; sırtın kameraya dönmesi istenmiyorsa bunu kilitle: "her back is never toward the camera".
-  - Işığın yüze düşmesi isteniyorsa ışık kaynağını da kameraya göre yer: "the window light comes from camera-left".
+**Ders A — yön (sağ/sol, dönüş) yazıyla güvenilir verilemez; ekrana + nesneye göre yaz, kesin olacaksa resimle göster (iki gerçek deneme + araştırma, 2026-11-16).**
+- Ne oldu: v1'de "half turn toward the window on the left" → kameraya sırtını döndü. v2'de "turns 90 degrees to HER RIGHT (camera-left), toward the window" → yine ters tarafa (kameranın sağına) döndü, başını omzunun üstünden pencereye çevirdi. Aynı v2'de sayıyla yazılan konum kilidi TUTTU.
+- Neden: video modelleri sağ/sol kelimesini neredeyse ayırt edemiyor (araştırmalarda belgeli; hareket yönü testlerinde en iyi modeller ≈%42–47 doğru). Görüntü modelleri "onun sağı"nı çoğunlukla izleyicinin sağı diye okuyor; "HER RIGHT" ile "camera-left" aynı cümlede çelişen iki işaret oldu. Konum tuttu, çünkü onu başlangıç karesi zaten gösteriyordu; dönüş yalnız yazıyla anlatılan şeydi.
+- Yazıyla yapılacaksa (denenmemiş, kaynakların ortak önerisi):
+  - Kişinin sağı/solu YAZMA; tek bir çerçeve kullan: ekran ("the left side of the frame") ve görünen bir nesne ("toward the bright window on the left side of the frame"). Derece ve büyük harfli RIGHT/LEFT yok.
+  - Hareketi değil SONU yaz: "ends in profile facing the window, sunlight on her face; her back is never toward the camera".
+  - Yön cümlesi prompt'un başına yakın ve bir kez; uzun kural listesi yön cümlesini boğar. Klip başına tek ana hareket.
+- Yön işin özüyse yazıya güvenme, GÖSTER:
+  1. Bitiş karesi: başlangıç karesini düzenleme modeliyle istenen son poza getir (yalnız pozu değiştir, yüz/kıyafet/oda/kadraj aynı), yönü gözle onayla, sonra bitiş karesi destekleyen moda ver (`api-modeller.md` §2). Gidip dönen hareket için iki kısa klip zinciri: A önden→profil, B profilden→öne.
+  2. Hareket kopyalama: gerçek bir kişinin aynı hareketi yaptığı kısa video + Kling 3.0 Motion Control (`character_orientation: video`). Video ters yöndeyse yatay aynala.
+  - Başarı oranları ölçülmedi; ucuz ayarda dene. Aynalama hilesi (başlangıç karesini çevir, üret, sonucu geri çevir) yalnız modelin sabit bir yön eğilimi varsa işe yarar — denenmedi.
+- Işık yönü de aynı kurala uyar: "the window light comes from the left side of the frame".
 
 **Ders B — gevşek ifade yetmez, SAYIYLA kilitle; en önemlisini HARD RULE'a koy (gerçek deneme, 2026-11-16).**
 - Ne oldu: "stays in the same spot, at most one small step" yazıldı; kadın dans ederken kameraya ≈1 m yaklaştı, son karelerde ayakları alt kenarda kesildi, tam boy kadraj bozuldu.
@@ -112,7 +116,7 @@ Her bölüm ayrı satır/başlık; İngilizce. Kullanılmayan bölümü sil, bo�
   - "her head and both feet are fully visible in EVERY frame, with floor visible below her feet"
   - kamera kilitliyse "camera locked, does not move or zoom" ile birlikte yaz.
 - En kritik kilit HARD RULE'a girer, büyük harfle: ör. "HARD RULE (HIGHEST PRIORITY): HER FULL BODY, HEAD TO FEET, STAYS INSIDE THE FRAME IN EVERY FRAME; SHE NEVER MOVES CLOSER TO THE CAMERA." Denemede HARD RULE yüz kimliğine ayrılmıştı ve yüz tuttu; konum kuralı yalnız sıradan satırdaydı ve bozuldu.
-- Bu çarenin işe yaradığı henüz denenmedi — DOĞRULANMADI; bir sonraki denemede kontrol et.
+- Denendi (v2, 2026-11-16): sayıyla yazılıp HARD RULE'a konan konum/kadraj kilidi tuttu — kameraya yaklaşmadı, baş ve ayaklar her karede göründü. Tek deneme.
 
 **Sorunu adlandıran bölüm:** bir hata her denemede tekrarlıyorsa prompt'a ona özel kısa bir bölüm ekle ("CRITICAL — this keeps going wrong: …") ve hatayı kare kare, sayıyla tarif et.
 
@@ -154,7 +158,7 @@ Video izlenemiyorsa karelere bakılır; bunu kullanıcıya açıkça söyle. Ses
 - [ ] Her referansın tek görevi yazılı mı; ilk kare tanımlı mı?
 - [ ] Kamera: boyut + açı + hareket; hareketin bitişi ve sabit kalacaklar yazılı mı?
 - [ ] Vuruşlar saniyeli, eylemi yapan adıyla, son vuruş = toplam süre, son kare tarif edilmiş mi?
-- [ ] Her yön kameraya ve kişinin kendi bedenine göre, dereceyle mi yazıldı ("HER RIGHT, camera-left")?
+- [ ] Yön ekrana ve görünen bir nesneye göre, bitiş pozuyla mı yazıldı (kişinin sağı/solu yok)? Yön işin özüyse bitiş karesi ya da hareket kopyalama seçildi mi?
 - [ ] Konum ve kadraj sayıyla mı kilitli (kameraya uzaklık, ayak/baş her karede görünür)?
 - [ ] Replikler tam, tırnak içinde, "no other speech"; ses/müzik talimatı açık mı?
 - [ ] CONTINUITY LOCKS olumlu cümleyle mi?

@@ -89,7 +89,7 @@ Beklenen:
 - Rakamın tarihini / doğrulanıp doğrulanmadığını söyler.
 - Taslak + final yolunu (480p taslak, sonra büyütme) ve toplamını anar.
 - Üretim başlatmaz; 15 soru sormaz.
-- 1080p'nin nasıl alındığının ve sesin fiyata etkisinin doğrulanmadığını söyler.
+- 1080p'nin doğrudan seçilebildiğini ya da taslak + büyütme yolunu doğru anlatır; sesin fiyata etkisinin doğrulanmadığını söyler.
 
 ## S11 · web-kredi (P)
 Mesaj: "Bu videoyu sitede üreteceğim, kaç kredi tutar? Dolar olarak da söyle."
@@ -102,3 +102,20 @@ Mesaj: "Web sitem için Remotion ile 5 saniyelik bir logo animasyonu kodlar mıs
 Beklenen:
 - Bunun Higgsfield üretim işi olmadığını fark eder; 15 soruya ve model seçimine girmez.
 - Kod/Remotion işine uygun başka bir yolu önerir ya da kapsam dışı olduğunu söyler.
+
+## S13 · yon-kritik-video (Ü)
+Mesaj: "Elimdeki fotoğrafta salonda kameraya bakan bir kadın var, pencere fotoğrafın solunda. 5 saniyelik video: yerinde dans etsin, pencereye dönsün, yüzüne güneş vursun, sonra bize dönsün." (Fotoğraf ekli ve hayali bir kişi varsay.)
+Beklenen:
+- Yeni istek: 15 soru sorar (cevapları varsayım diye verip devam eder).
+- Prompt'ta kişinin sağı/solu ("her right", "her left") YOK; yön ekrana ve pencereye göre, bitiş pozuyla yazılı.
+- Yönün yazıyla tutmayabileceğini söyler ve yön işin özü olduğu için bitiş karesi (resimle göster) ya da hareket kopyalama (Kling Motion Control) yolunu maliyetiyle sunar ya da seçer.
+- Konum/kadrajı sayıyla kilitler (mesafe, ayaklar her karede görünür).
+- Göndermez; onay satırında model + ayar + ≈ maliyet var.
+
+## S14 · model-secimi-ve-govde (Ü)
+Mesaj: "Bir fotoğraftan 8 saniyelik, sessiz, yavaş bir manzara videosu istiyorum: göl kenarı, sis dağılıyor. Bütçem dar."
+Beklenen:
+- Tek modele alışkanlıkla atlamaz: en az 2 API adayını (ör. Wan 3.0, Kling 3.0, Seedance 2.5) seçilen ayardaki fiyatıyla karşılaştırır, birini gerekçeyle seçer.
+- Gövdede yalnız modelin resmi alanlarını kullanır; sessiz video için ses alanını açıkça kapatır; fiyatı etkileyen alanları (çözünürlük, süre) açıkça yazar.
+- Göndermeden önce `hf.py kontrol` (ya da `sema`) kullanacağını söyler veya çalıştırır; `gonder` / `yukle` çağırmaz.
+- Prompt'u yeniden yazan bir ayar varsa kapatır.

@@ -110,7 +110,7 @@ Bir yardımcı yapay zekâdan prompt düzelttirirken verilecek kalıp:
 **Baştan yazmayın.** Usta örneklerde kötü denemeden sonra prompt baştan yazılmıyor; hatayı adlandıran tek bölüm ekleniyor, geri kalan cümlelere dokunulmuyor, çünkü her yeniden yazım çalışan kısımları da riske atar. (Gönderilen metin yine tam prompt'tur; "baştan yazma" = çalışan cümleleri değiştirme.) Birden çok hata varsa en ağırı HARD RULE'a, diğerleri ayrı adlandırılmış bölümlere gider.
 
 - **Hatayı adlandıran bölüm, kural başlıkta.** Başlığın kendisi kuralı söyler; gerekirse "neden" de eklenir:
-  - `TURNS TO HER RIGHT — FACE STAYS VISIBLE — CRITICAL:`
+  - `FACE STAYS VISIBLE — HER BACK IS NEVER TOWARD THE CAMERA — CRITICAL:`
   - `NO TEARS — CHEEKS STAY DRY`
   - `ALREADY STANDING — SHE DOES NOT STAND UP`
   - `CRITICAL — BECAUSE THIS KEEPS GOING WRONG:` + hareketin fiziksel sırası (1)(2)(3), kameraya göre.
@@ -119,7 +119,7 @@ Bir yardımcı yapay zekâdan prompt düzelttirirken verilecek kalıp:
   - "kameraya yaklaşmaz" → `distance to camera stays 3.5 m for the whole shot`
   - "yerinde dans eder" → `feet stay inside the rug; feet visible in every frame`
   - "başını kaldırır" → `raises her head over 1.5 seconds`
-- **Yönü kameraya göre yazın:** "pencereye döner" değil, `turns to HER RIGHT, ending in profile to camera`; çünkü model "pencereye doğru"yu kendi bakış noktasına göre yorumlayabilir. Gerekirse referans görselin üzerine **ok çizerek** bakış/hareket yönü gösterilir.
+- **Yön (sağ/sol, dönüş) yazıyla tutmuyorsa yazıyı değil yöntemi değiştirin.** Kişinin sağı/solu yazılmaz; ekran + görünen nesne + bitiş pozu yazılır (`toward the window on the left side of the frame; ends in profile facing the window`). Yön iki denemede tutmadıysa üçüncü kez cümle oynamayın: bitiş karesi ya da hareket kopyalama (Kling Motion Control) kullanın — `video-prompt.md` §7 Ders A. Gerekirse referans görselin üzerine **ok çizerek** bakış/hareket yönü gösterilir (denenmedi).
 - **Sık sızıntılar için hazır kilitler** (gerekeni baştan şablona koyun):
   - Hız: `real-time speed, no slow motion, no speed ramps; if it looks floaty or dreamlike, the speed is wrong.`
   - Fazladan kişi: `exactly N people; nobody else appears, not even as a shadow or reflection.`
@@ -170,4 +170,5 @@ Bir yardımcı yapay zekâdan prompt düzelttirirken verilecek kalıp:
 - TUTTU: tek kesintisiz çekim (otomatik taramada sıfır kesme); kamera sabit; oda ve eşyalar yerinde; yeni kişi yok; yüz baştan sona aynı kadına benziyor; hareket neşeli ve doğal.
 - TUTMADI: (1) kişi kameraya yaklaşık 1 m yaklaştı, son karelerde ayaklar kesildi. (2) pencereye değil kameraya sırtını döndü; yüze sıcak ışık hiç düşmedi.
 - Teşhis (karar ağacı): referans temiz → hata prompt'ta. "Pencereye doğru" yönü kameraya göre değildi; "en fazla küçük bir adım" ölçülebilir değildi.
-- Düzeltme önerisi (henüz denenmedi): yönü kameraya göre yazmak (`turns to HER RIGHT, ending in profile to camera; face stays visible`), mesafeyi sayıya çevirmek (`feet stay inside the rug; distance to camera stays 3.5 m; feet visible in every frame`) ve bunu en öncelikli kural olarak başta ve sonda tekrarlamak; korunacaklar = TUTTU listesi.
+- Düzeltme (v2, denendi): mesafe sayıya çevrildi ve HARD RULE'a alındı (`distance to camera stays 3.5 m; head and both feet visible in every frame`) → TUTTU. Yön `turns 90 degrees to HER RIGHT (camera-left)` diye yazıldı → yine ters döndü, ama yüz görünür kaldı ve yüze ışık düştü.
+- Ders: sayıyla konum kilidi işe yarıyor; yön için yazı yetmiyor (iki deneme). Sonraki adım cümle değil yöntem: bitiş karesi ya da hareket kopyalama. Kural gereği üçüncü denemeden önce kullanıcıyla konuşuldu.

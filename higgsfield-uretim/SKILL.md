@@ -18,7 +18,7 @@ Emin değilsen prompt biçimini varsay; olmayan bir aracı varmış gibi anlatma
 2. **15 soru sor** (`references/sorular.md`). Ne istediğini sor; modeli, çözünürlüğü, ayarı kullanıcıya seçtirme — cevaplardan sen seç. Soru ucuz, hatalı üretim pahalı. Yeni her üretim isteğinde 15 soru sorulur. Var olan bir çıktıyı düzeltirken 15'e tamamlama: yalnız eksik kalanı sor (çoğu zaman 0–3 soru), çünkü gerisi önceki cevaplarda ve kayıtta zaten var.
 3. **Sahneyi düz Türkçeyle anlat** (3–5 cümle: kim, nerede, ne oluyor, kamera, ışık). Yanlış anlaşılan burada, para harcanmadan yakalanır.
 4. **Prompt'u yaz.** Görsel: `references/gorsel-prompt.md`. Video: `references/video-prompt.md`. Aynı kişi/mekân/eşya birden çok çıktıda geçecekse ya da gerçek kişi fotoğrafı kaynaksa önce `references/karakter-mekan-esya.md`.
-5. **Model ve ayarı seç, maliyeti hesapla** (`references/modeller-ve-maliyet.md`). Önce ucuz taslak, beğenilirse büyük boy.
+5. **Model ve ayarı seç, maliyeti hesapla** (`references/modeller-ve-maliyet.md`; üretim biçiminde ayrıca `references/api-modeller.md`). Tek modele alışkanlıkla atlama: işe uyan 2–3 adayı fiyatıyla karşılaştır, birini gerekçeyle seç. Yön ya da son poz işin özüyse yazıya güvenme; bitiş karesi ya da hareket kopyalama destekleyen yolu seç (`references/video-prompt.md` §7). Önce ucuz taslak, beğenilirse büyük boy.
 6. **Onay iste — tek satır:** model + ayar + ≈ maliyet. Onay gelmeden ücretli hiçbir şey başlatma. Büyük boy ayrı ücretli adımdır: taslak beğenildikten sonra ayrıca maliyet + onay.
 7. **Üret** (üretim biçimi) ya da **teslim paketini ver** (prompt biçimi).
 8. **Sonucu denetle** (`references/kontrol-ve-duzeltme.md`). Görsele kendin bak; videoda baştan sona sık aralıklı karelere bak. Videoyu izleyemiyorsan söyle. Bakmadığın şeye "iyi" deme.
@@ -59,6 +59,6 @@ Kullanıcı yalnız "prompt yaz" ya da "planla" dediyse 15 soru yine sorulur (iy
 - `references/karakter-mekan-esya.md` — tutarlı kişi/mekân/eşya, gerçek kişi fotoğrafı, çok çekimli iş.
 - `references/modeller-ve-maliyet.md` — model seçmeden ve maliyet söylemeden önce.
 - `references/kontrol-ve-duzeltme.md` — sonuç geldiğinde ve her düzeltmeden önce.
-- `references/api-claude-code.md` ve `scripts/hf.py` — yalnız üretim biçiminde. Bir GPT'ye ya da sohbet projesine bilgi dosyası yüklerken bu ikisini yükleme.
+- `references/api-claude-code.md`, `references/api-modeller.md` ve `scripts/hf.py` — yalnız üretim biçiminde. Göndermeden önce `hf.py kontrol` (ücretsiz) gövdeyi modelin resmi alanlarıyla karşılaştırır. Bir GPT'ye ya da sohbet projesine bilgi dosyası yüklerken bu üçünü yükleme.
 
 Model adları, fiyatlar ve site düzeni değişir: dosyadaki tarihli bilgi sitede gördüğünle çelişirse siteye güven ve farkı kullanıcıya söyle.
