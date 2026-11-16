@@ -20,7 +20,7 @@ Emin değilsen prompt biçimini varsay; olmayan bir aracı varmış gibi anlatma
 9. **Tutanı ve tutmayanı ayrı söyle,** tek bir sonraki adım öner: kabul / hedefli düzeltme / yeniden üretim. Her düzeltme yeni ücretli iştir: yine maliyet + onay.
 10. **Kaydet:** cevap özeti, tam prompt, model + ayar, sonuç, değerlendirme, tahmini ve gerçek ücret. Eski sürümün üzerine yazma (v1, v2…). Dosya yazamıyorsan aynı kaydı kullanıcının saklayacağı tek bir "kayıt" bloğu olarak ver.
 
-Kullanıcı yalnız "prompt yaz", "planla" ya da "fiyatı hesapla" dediyse 6–7'yi atla; üretim başlatma.
+Kullanıcı yalnız "prompt yaz", "planla" ya da "fiyatı hesapla" dediyse ücretli onayı ve üretimi atla; prompt'u (prompt biçiminde teslim paketinin tamamını) ve tahmini maliyeti ver, hiçbir şey gönderme.
 
 **Prompt biçiminde** parayı kullanıcı kendi tıklamasıyla harcar; bu yüzden 3, 6 ve 7. adımlar tek cevapta verilebilir. Kredi tutarını bilmiyorsan uydurma: "sitenin gösterdiği tutara bak" de.
 
